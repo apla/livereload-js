@@ -4,6 +4,9 @@ class Options {
     this.host = null;
     this.port = 35729;
 
+    this.transport = 'ws';
+    this.path = 'livereload';
+
     this.snipver = null;
     this.ext = null;
     this.extver = null;
@@ -20,6 +23,18 @@ class Options {
 
     if (!isNaN(+value)) {
       value = +value;
+    }
+
+    if (value === 'null') {
+      value = null;
+    }
+
+    if (value === 'true') {
+      value = true;
+    }
+
+    if (value === 'false') {
+      value = false;
     }
 
     this[name] = value;

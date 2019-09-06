@@ -10,6 +10,7 @@ describe('Options', function () {
     const options = Options.extract(dom.window.document);
     assert.ok(options);
     assert.strictEqual('somewhere.com', options.host);
+    assert.strictEqual('ws', options.transport);
     return assert.strictEqual(9876, options.port);
   });
 
@@ -98,6 +99,15 @@ describe('Options', function () {
     options = Options.extract(dom.window.document);
     assert.ok(options);
     return assert.strictEqual('somewhere.org', options.host);
+  });
+
+  it('should allow to set null transport', function () {
+    const dom = new JSDOM('<script src="//somewhere.com/132324324/23243443/4343/livereload.js?transport=null"></script>', {
+      url: 'https://somewhere.org/'
+    });
+    const options = Options.extract(dom.window.document);
+    assert.ok(options);
+    return assert.strictEqual(null, options.transport);
   });
 
   return it('should recognize protocol-relative https URL', function () {

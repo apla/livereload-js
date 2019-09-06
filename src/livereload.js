@@ -26,12 +26,6 @@ class LiveReload {
           error () {}
         };
 
-    // i can haz sockets?
-    if (!(this.WebSocket = this.window.WebSocket || this.window.MozWebSocket)) {
-      this.console.error('LiveReload disabled because the browser does not seem to support web sockets');
-      return;
-    }
-
     // i can haz options?
     if ('LiveReloadOptions' in window) {
       this.options = new Options();
@@ -47,8 +41,31 @@ class LiveReload {
       }
     }
 
+    // i can haz sockets?
+    if (this.options.transport === 'ws' && !(this.WebSocket = this.window.WebSocket || this.window.MozWebSocket)) {
+      this.console.error('LiveReload disabled because the browser does not seem to support web sockets');
+      return;
+    // } else if (this.options.transport === 'sse' && !(this.EventSource = this.window.EventSource)) {
+    //   this.console.error('LiveReload disabled because the browser does not seem to support EventSource');
+    //   return;
+    }
+    
     // i can haz reloader?
     this.reloader = new Reloader(this.window, this.console, Timer);
+
+    if (this.options.transport === null) {
+      // page will generate reload events itself by LiveReload.performReload()
+    // } else if (this.options.transport === 'sse') {
+    //   this.initSSETransport();
+    } else if (this.options.transport === 'ws') {
+      this.initWSTransport();
+    }
+
+    this.initialized = true;
+
+  }
+
+  initWSTransport () {
 
     // i can haz connection?
     this.connector = new Connector(this.options, this.WebSocket, Timer, {
@@ -107,8 +124,6 @@ class LiveReload {
         }
       }
     });
-
-    this.initialized = true;
   }
 
   on (eventName, handler) {
