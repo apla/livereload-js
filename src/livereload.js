@@ -123,9 +123,9 @@ class LiveReload {
     this.log(`LiveReload received reload request: ${JSON.stringify(message, null, 2)}`);
 
     return this.reloader.reload(message.path, {
-      liveCSS: message.liveCSS != null ? message.liveCSS : true,
-      liveImg: message.liveImg != null ? message.liveImg : true,
-      reloadMissingCSS: message.reloadMissingCSS != null ? message.reloadMissingCSS : true,
+      liveCSS: message.liveCSS || true,
+      liveImg: message.liveImg || true,
+      reloadMissingCSS: message.reloadMissingCSS || true,
       originalPath: message.originalPath || '',
       overrideURL: message.overrideURL || '',
       serverURL: `http://${this.options.host}:${this.options.port}`,
