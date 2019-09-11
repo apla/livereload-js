@@ -20,6 +20,7 @@ describe('Options', function () {
     const options = Options.extract(dom.window.document);
     assert.ok(options);
     assert.strictEqual('somewhere.com', options.host);
+    assert.strictEqual('ws', options.transport);
     return assert.strictEqual(9876, options.port);
   });
 
@@ -29,6 +30,7 @@ describe('Options', function () {
     const options = Options.extract(dom.window.document);
     assert.ok(options);
     assert.strictEqual('somewhere.com', options.host);
+    assert.strictEqual('ws', options.transport);
     return assert.strictEqual(9876, options.port);
   });
 
